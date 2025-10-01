@@ -1,5 +1,7 @@
 build_*/
 lib/
+hello_world.cpp
+run.bat
 
 *.s
 *.exe
