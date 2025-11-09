@@ -1,4 +1,4 @@
-CPP_FILES="io.cpp merge.cpp merge_sort.cpp main.cpp"
+CPP_FILES="io.cpp merge_sort.cpp main.cpp"
 APP=merge_sort
 
 if [ -f $APP ]; then rm $APP

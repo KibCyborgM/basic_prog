@@ -2,7 +2,7 @@
 chcp 1251 > log
 del log
 
-set CPP_FILES="io.cpp merge.cpp merge_sort.cpp main.cpp"
+set CPP_FILES="io.cpp merge_sort.cpp main.cpp"
 set EXE=merge_sort.exe
 set CHARSET="-finput-charset=utf-8 -fexec-charset=windows-1251"
 
