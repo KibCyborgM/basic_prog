@@ -21,23 +21,33 @@ const tar::MenuItem* tar::show_menu(const MenuItem* current) {
 	
 	return current->children[user_input];
 }
-const tar::MenuItem* tar::study_go_back(const MenuItem* current){
+const tar::MenuItem* tar::go_back(const MenuItem* current){
 	return current->parent->parent;
 	
 }
-const tar::MenuItem* tar::study_summ(const MenuItem* current){
-	std::cout << current->title << std::endl;
+const tar::MenuItem* tar::algebra_summ(const MenuItem* current){
+	std::cout << current->title << "\n" << std::endl;
 	return current->parent;
 }
-const tar::MenuItem* tar::study_substract(const MenuItem* current){
-	std::cout << current->title << std::endl;
+const tar::MenuItem* tar::algebra_substract(const MenuItem* current){
+	std::cout << current->title << "\n" << std::endl;
 	return current->parent;
 }
-const tar::MenuItem* tar::study_multiply(const MenuItem* current){
-	std::cout << current->title << std::endl;
+const tar::MenuItem* tar::algebra_multiply(const MenuItem* current){
+	std::cout << current->title << "\n" << std::endl;
 	return current->parent;
 }
-const tar::MenuItem* tar::study_divide(const MenuItem* current){
-	std::cout << current->title << std::endl;
+const tar::MenuItem* tar::algebra_divide(const MenuItem* current){
+	std::cout << current->title << "\n" << std::endl;
+	return current->parent;
+}
+
+const tar::MenuItem* tar::mathanalysis_dif_count(const MenuItem* current){
+	std::cout << current->title << "\n" << std::endl;
+	return current->parent;
+}
+
+const tar::MenuItem* tar::mathanalysis_int_count(const MenuItem* current){
+	std::cout << current->title << "\n" << std::endl;
 	return current->parent;
 }
