@@ -2,16 +2,16 @@
 #include "menu_functions.hpp"
 
 const tar::MenuItem tar::OTHERS_DATABASES = {
-	"1 - Базы данных", tar::others_databases, &tar::PROG_OTHERS
+	"1 - Базы данных", "Базы данных", tar::others_databases, &tar::PROG_OTHERS
 };
 const tar::MenuItem tar::OTHERS_MULTIPROG = {
-	"2 - Многопоточное программирование", tar::others_multiprog, &tar::PROG_OTHERS
+	"2 - Многопоточное программирование", "Многопоточное программирование", tar::others_multiprog, &tar::PROG_OTHERS
 };
 const tar::MenuItem tar::OTHERS_NETWORK = {
-	"3 - Сетевые технологии", tar::others_network, &tar::PROG_OTHERS
+	"3 - Сетевые технологии", "Сетевые технологии", tar::others_network, &tar::PROG_OTHERS
 };
 const tar::MenuItem tar::OTHERS_GO_BACK = {
-	"0 - Выйти в предыдущее меню", tar::go_back, &tar::PROG_OTHERS
+	"0 - Выйти в предыдущее меню", nullptr, tar::go_back, &tar::PROG_OTHERS
 };
 
 namespace {
@@ -26,16 +26,16 @@ namespace {
 }
 
 const tar::MenuItem tar::PROG_LANGUAGES = {
-	"1 - Изучать языки программирования", tar::prog_languages, &tar::PROGRAMMING
+	"1 - Изучать языки программирования", "Языки программирования", tar::prog_languages, &tar::PROGRAMMING
 };
 const tar::MenuItem tar::PROG_ALGS_AND_STRUCTURES = {
-	"2 - Алгоритмы и структуры", tar::prog_algs_and_structures, &tar::PROGRAMMING
+	"2 - Алгоритмы и структуры", "Алгоритмы и структуры", tar::prog_algs_and_structures, &tar::PROGRAMMING
 };
 const tar::MenuItem tar::PROG_OTHERS = {
-	"3 - Другие технологии", tar::show_menu, &tar::PROGRAMMING, others_children, others_children_size
+	"3 - Другие технологии", "Другие технологии",  tar::show_menu, &tar::PROGRAMMING, others_children, others_children_size
 };
 const tar::MenuItem tar::PROG_GO_BACK = {
-	"0 - Выйти в главное меню", tar::go_back, &tar::PROGRAMMING
+	"0 - Выйти в главное меню", nullptr, tar::go_back, &tar::PROGRAMMING
 };
 
 namespace {
@@ -50,10 +50,10 @@ namespace {
 }
 
 const tar::MenuItem tar::PROGRAMMING = {
-	"1 - Изучать программирование", tar::show_menu, &tar::MAIN, prog_children, prog_children_size
+	"1 - Изучать программирование", "Обучайка", tar::show_menu, &tar::MAIN, prog_children, prog_children_size
 };
 const tar::MenuItem tar::FOOTBALL = {
-	"0 - Пойти играть в футбол", tar::main_exit, &tar::MAIN
+	"0 - Пойти играть в футбол", nullptr, tar::main_exit, &tar::MAIN
 };
 
 namespace {
@@ -66,5 +66,5 @@ namespace {
 }
 
 const tar::MenuItem tar::MAIN = {
-	nullptr, tar::show_menu, nullptr, main_children, main_children_size
+	nullptr, "Обучайка", tar::show_menu, nullptr, main_children, main_children_size
 };

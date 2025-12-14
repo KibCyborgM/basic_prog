@@ -2,14 +2,14 @@
 
 namespace tar {
 	struct MenuItem {
-		const char* const title;  // 1 МС (8Б)
-		const MenuItem* (*func)(const MenuItem* current); // 1 МС (8Б)
+		const char* const title;
+		const char* const message;
 		
-		const MenuItem* parent; //1 МС (8Б)
+		const MenuItem* (*func)(const MenuItem* current);
 		
-		const MenuItem* const *children; //1 МС (8Б)
-		bool t1; // 1 Б
-		const int children_size; // 4 Б
+		const MenuItem* parent;
 		
-	}; // 40 Б!
+		const MenuItem* const *children; 
+		const int children_size;
+	};
 }; 

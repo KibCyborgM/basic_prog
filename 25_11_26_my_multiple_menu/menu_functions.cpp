@@ -3,7 +3,7 @@
 #include "menu_functions.hpp"
 
 const tar::MenuItem* tar::show_menu(const MenuItem* current){
-	std::cout << "Обучайка приветствует тебя!" << std::endl;
+	std::cout << current->message << " приветствует тебя!" << std::endl;
 	for (int i = 1; i < current->children_size; i ++){
 		std::cout << current->children[i]->title << std::endl;
 	}
