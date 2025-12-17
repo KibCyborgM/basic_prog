@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableDelayedExpansion
 
 set BUILD_TYPE=Ninja
 set BUILD_SUFFIX=ninja
@@ -16,3 +17,6 @@ cmake -G %BUILD_TYPE% ..\%SOURCE_FOLDER%
 cmake --build .
 
 copy ..\%SOURCE_FOLDER%\multiple_level_menu\run_multiple_menu.bat .\multiple_menu
+copy ..\%SOURCE_FOLDER%\merge_sort\run_app.bat .\merge_sort
+
+copy ..\run_tests.bat .
