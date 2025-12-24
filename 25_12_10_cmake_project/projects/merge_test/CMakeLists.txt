@@ -1,6 +1,8 @@
 project(merge_test)
 
-add_library(merge_sort_lib "")
+set(LIBRARY "merge_sort_lib666")
+
+add_library(${LIBRARY} "")
 
 add_subdirectory(src)
 add_subdirectory(test)
