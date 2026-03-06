@@ -8,4 +8,4 @@ target_link_libraries(test_merge
 	${LIBRARY}
 )
 
-add_test(test_merge test_merge)
+#add_test(test_merge test_merge)

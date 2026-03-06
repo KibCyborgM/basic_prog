@@ -9,5 +9,7 @@ enable_testing()
 add_subdirectory(multiple_level_menu)
 add_subdirectory(merge_sort)
 add_subdirectory(merge_test)
+add_subdirectory(long_numbers_tests)
+add_subdirectory(long_numbers)
 
 set(CMAKE_SUPPRESS_REGENERATION true)
