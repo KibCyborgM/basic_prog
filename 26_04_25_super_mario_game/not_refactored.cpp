@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdio.h>
 
 #include <math.h>
 #include <windows.h>
 
-#define MAP_HEIGHT 25
 #define MAP_WIDTH 80
+#define MAP_HEIGHT 25
 
 struct S_OBJECT {
 	float x,y;
@@ -15,78 +16,19 @@ struct S_OBJECT {
 	float horiz_speed;
 };
 
-S_OBJECT *BRICK = NULL;
-int BRICK_LENGTH;
-int LEVEL = 1;
 char MAP[MAP_HEIGHT][MAP_WIDTH+1];
 S_OBJECT MARIO;
-int MAX_LVL;
-int SCORE;
-S_OBJECT *get_new_moving();
+S_OBJECT *BRICK = NULL;
+int BRICK_LENGTH;
+
 S_OBJECT *moving = NULL;
 int moving_length;
 
-void clear_map();
+int LEVEL = 1;
+int SCORE;
+int MAX_LVL;
+
 void create_level(int lvl);
-void delete_moving(int i);
-S_OBJECT *get_new_brick();
-S_OBJECT *get_new_moving();
-void horizon_move_map(float dx);
-void horizon_move_object(S_OBJECT *obj);
-void init_object(S_OBJECT *obj, float x_pos, float y_pos, float o_width, float o_height, char in_type);
-bool is_collision(S_OBJECT o1, S_OBJECT o2);
-bool is_pos_in_map(int x, int y);
-void mario_collision();
-void player_dead();
-void put_object_on_map(S_OBJECT obj);
-void put_score_on_map();
-void set_cur (int x, int y);
-void set_object_pos(S_OBJECT *obj, float x_pos, float y_pos);
-void show_map();
-void vert_move_object(S_OBJECT *obj);
-
-
-int main() {
-	create_level(LEVEL);
-	
-	do {
-		clear_map();
-		if((MARIO.is_fly == false) 
-			&& (GetKeyState(VK_SPACE) < 0))
-			MARIO.vert_speed = -1;
-		if (GetKeyState('A') < 0)
-			horizon_move_map(1);
-		if (GetKeyState('D') < 0)
-			horizon_move_map(-1);
-		
-		if (MARIO.y > MAP_HEIGHT)
-			player_dead();
-		
-		vert_move_object(&MARIO);
-		mario_collision();
-		
-		for(int i = 0; i < BRICK_LENGTH; i++)
-			put_object_on_map(BRICK[i]);
-		
-		for(int i = 0; i < moving_length; i++){
-			vert_move_object(moving+i);
-			horizon_move_object(moving+i);
-			put_object_on_map(moving[i]);
-		
-		}
-		
-		put_object_on_map(MARIO);
-		put_score_on_map();
-		
-		
-		set_cur(0, 0);
-		show_map();
-		Sleep(10);
-	} while (GetKeyState(VK_ESCAPE) >= 0);
-	return 0;
-}
-
-
 
 void clear_map(){
 	
@@ -126,6 +68,9 @@ void player_dead(){
 	Sleep(500);
 	create_level(LEVEL);
 }
+
+bool is_collision(S_OBJECT o1, S_OBJECT o2);
+S_OBJECT *get_new_moving();
 
 void vert_move_object(S_OBJECT *obj){
 	
@@ -338,4 +283,44 @@ void create_level(int lvl) {
 		init_object(get_new_moving(), 120, 10, 3, 2, 'o');
 		init_object(get_new_moving(), 130, 10, 3, 2, 'o');
 	}
+}
+
+int main()
+{
+	create_level(LEVEL);
+	
+	do {
+		clear_map();
+		if((MARIO.is_fly == false) && (GetKeyState(VK_SPACE) < 0))
+			MARIO.vert_speed = -1;
+		if (GetKeyState('A') < 0)
+			horizon_move_map(1);
+		if (GetKeyState('D') < 0)
+			horizon_move_map(-1);
+		
+		if (MARIO.y > MAP_HEIGHT)
+			player_dead();
+		
+		vert_move_object(&MARIO);
+		mario_collision();
+		
+		for(int i = 0; i < BRICK_LENGTH; i++)
+			put_object_on_map(BRICK[i]);
+		
+		for(int i = 0; i < moving_length; i++){
+			vert_move_object(moving+i);
+			horizon_move_object(moving+i);
+			put_object_on_map(moving[i]);
+		
+		}
+		
+		put_object_on_map(MARIO);
+		put_score_on_map();
+		
+		
+		set_cur(0, 0);
+		show_map();
+		Sleep(10);
+	} while (GetKeyState(VK_ESCAPE) >= 0);
+	return 0;
 }
