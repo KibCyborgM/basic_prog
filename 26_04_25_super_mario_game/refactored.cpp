@@ -1,9 +1,11 @@
-#include <iostream>
-#include <cmath>
 #include <algorithm>
-#include <string>
-#include <windows.h>
+#include <cmath>
+#include <iostream>
 #include <cstdlib>
+#include <string>
+
+#include <windows.h>
+
 
 constexpr int MAP_HEIGHT = 25;
 constexpr int MAP_WIDTH  = 80;
@@ -17,11 +19,7 @@ struct S_OBJECT {
     float horiz_speed = 0.2f;
 };
 
-char MAP[MAP_HEIGHT][MAP_WIDTH + 1] = {};
-
-
-
-void clear_map();
+void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
 void create_level(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, S_OBJECT*& moving, int& moving_length, int lvl, int& SCORE);
 void delete_moving(S_OBJECT*& moving, int& moving_length, int i);
 S_OBJECT* get_new_brick(S_OBJECT*& BRICK, int& BRICK_LENGTH);
@@ -33,11 +31,11 @@ bool is_collision(S_OBJECT o1, S_OBJECT o2);
 bool is_pos_in_map(int x, int y);
 void mario_collision(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, S_OBJECT*& moving, int& moving_length, int& LEVEL, int& MAX_LVL, int& SCORE);
 void player_dead(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, S_OBJECT*& moving, int& moving_length, int& LEVEL, int& SCORE);
-void put_object_on_map(S_OBJECT obj);
-void put_score_on_map(int& SCORE);
+void put_object_on_map(S_OBJECT obj, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
+void put_score_on_map(int& SCORE, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
 void set_cur(int x, int y);
 void set_object_pos(S_OBJECT* obj, float x_pos, float y_pos);
-void show_map();
+void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
 void vert_move_object(S_OBJECT* obj, S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, S_OBJECT*& moving, int& moving_length, int& LEVEL, int& MAX_LVL, int& SCORE);
 
 int main() {
@@ -47,6 +45,7 @@ int main() {
 	S_OBJECT* moving = nullptr;
 	int moving_length = 0;
 	
+	char MAP[MAP_HEIGHT][MAP_WIDTH + 1] = {};
 	int LEVEL = 1;
 	int MAX_LVL = 0;
 	int SCORE = 0;
@@ -54,7 +53,7 @@ int main() {
     create_level(&MARIO, BRICK, BRICK_LENGTH, moving, moving_length, LEVEL, SCORE);
 
     do {
-        clear_map();
+        clear_map(MAP);
         if (!MARIO.is_fly && GetKeyState(VK_SPACE) < 0)
             MARIO.vert_speed = -1.0f;
         if (GetKeyState('A') < 0)
@@ -69,26 +68,26 @@ int main() {
         mario_collision(&MARIO, BRICK, BRICK_LENGTH, moving, moving_length, LEVEL, MAX_LVL, SCORE);
 
         for (int i = 0; i < BRICK_LENGTH; ++i)
-            put_object_on_map(BRICK[i]);
+            put_object_on_map(BRICK[i], MAP);
 
         for (int i = 0; i < moving_length; ++i) {
             vert_move_object(moving + i, &MARIO, BRICK, BRICK_LENGTH, moving, moving_length, LEVEL, MAX_LVL, SCORE);
             horizon_move_object(moving + i, &MARIO, BRICK, BRICK_LENGTH, moving, moving_length, LEVEL, MAX_LVL, SCORE);
-            put_object_on_map(moving[i]);
+            put_object_on_map(moving[i], MAP);
         }
 
-        put_object_on_map(MARIO);
-        put_score_on_map(SCORE);
+        put_object_on_map(MARIO, MAP);
+        put_score_on_map(SCORE, MAP);
 
         set_cur(0, 0);
-        show_map();
+        show_map(MAP);
         Sleep(10);
     } while (GetKeyState(VK_ESCAPE) >= 0);
     return 0;
 }
 
 
-void clear_map() {
+void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     for (int i = 0; i < MAP_WIDTH; ++i)
         MAP[0][i] = ' ';
     
@@ -279,7 +278,7 @@ void player_dead(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, S_OBJECT*
     create_level(MARIO, BRICK, BRICK_LENGTH, moving, moving_length, LEVEL, SCORE);
 }
 
-void put_object_on_map(S_OBJECT obj) {
+void put_object_on_map(S_OBJECT obj, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     int ix = static_cast<int>(std::round(obj.x));
     int iy = static_cast<int>(std::round(obj.y));
     int i_width = static_cast<int>(std::round(obj.width));
@@ -292,7 +291,7 @@ void put_object_on_map(S_OBJECT obj) {
     }
 }
 
-void put_score_on_map(int& SCORE) {
+void put_score_on_map(int& SCORE, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     std::string score_str = "SCORE: " + std::to_string(SCORE);
     for (size_t i = 0; i < score_str.length() && (i + 5) < MAP_WIDTH; ++i)
         MAP[1][i + 5] = score_str[i];
@@ -310,7 +309,7 @@ void set_object_pos(S_OBJECT* obj, float x_pos, float y_pos) {
     obj->y = y_pos;
 }
 
-void show_map() {
+void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     MAP[MAP_HEIGHT - 1][MAP_WIDTH - 1] = '\0';
     for (int j = 0; j < MAP_HEIGHT; ++j)
         std::cout << MAP[j];
