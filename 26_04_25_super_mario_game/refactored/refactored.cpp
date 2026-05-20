@@ -21,22 +21,22 @@ struct S_OBJECT {
 
 void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
 
-void create_level(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
-				  S_OBJECT*& moving, int& moving_length, 
+void create_level(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+				  S_OBJECT*& moving, std::size_t& moving_length, 
 				  int lvl, int& SCORE);
 				  
-void delete_moving(S_OBJECT*& moving, int& moving_length, int i);
+void delete_moving(S_OBJECT*& moving, std::size_t& moving_length, int i);
 
-S_OBJECT* get_new_brick(S_OBJECT*& BRICK, int& BRICK_LENGTH);
+S_OBJECT* get_new_brick(S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH);
 
-S_OBJECT* get_new_moving(S_OBJECT*& moving, int& moving_length);
+S_OBJECT* get_new_moving(S_OBJECT*& moving, std::size_t& moving_length);
 
-void horizon_move_map(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, 
-					  S_OBJECT*& moving, int& moving_length, float dx);
+void horizon_move_map(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH, 
+					  S_OBJECT*& moving, std::size_t& moving_length, float dx);
 					  
 void horizon_move_object(S_OBJECT* obj, S_OBJECT* MARIO, 
-						 S_OBJECT*& BRICK, int& BRICK_LENGTH, 
-						 S_OBJECT*& moving, int& moving_length, 
+						 S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH, 
+						 S_OBJECT*& moving, std::size_t& moving_length, 
 						 int& LEVEL, int& MAX_LVL, int& SCORE);
 						 
 void init_object(S_OBJECT* obj, float x_pos, float y_pos, 
@@ -46,12 +46,12 @@ bool is_collision(S_OBJECT o1, S_OBJECT o2);
 
 bool is_pos_in_map(int x, int y);
 
-void mario_collision(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
-					 S_OBJECT*& moving, int& moving_length,
+void mario_collision(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+					 S_OBJECT*& moving, std::size_t& moving_length,
 					 int& LEVEL, int& MAX_LVL, int& SCORE);
 					 
-void player_dead(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
-				 S_OBJECT*& moving, int& moving_length,
+void player_dead(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+				 S_OBJECT*& moving, std::size_t& moving_length,
 				 int& LEVEL, int& SCORE);
 				 
 void put_object_on_map(S_OBJECT obj, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
@@ -65,17 +65,17 @@ void set_object_pos(S_OBJECT* obj, float x_pos, float y_pos);
 void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
 
 void vert_move_object(S_OBJECT* obj, S_OBJECT* MARIO,
-					  S_OBJECT*& BRICK, int& BRICK_LENGTH,
-					  S_OBJECT*& moving, int& moving_length,
+					  S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+					  S_OBJECT*& moving, std::size_t& moving_length,
 					  int& LEVEL, int& MAX_LVL, int& SCORE);
 
 int main()
 {
 	S_OBJECT MARIO;
 	S_OBJECT* BRICK = nullptr;
-	int BRICK_LENGTH = 0;
+	std::size_t BRICK_LENGTH = 0;
 	S_OBJECT* moving = nullptr;
-	int moving_length = 0;
+	std::size_t moving_length = 0;
 	
 	char MAP[MAP_HEIGHT][MAP_WIDTH + 1] = {};
 	int LEVEL = 1;
@@ -130,8 +130,8 @@ void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1])
         std::copy(MAP[0], MAP[0] + MAP_WIDTH + 1, MAP[j]);
 }
 
-void create_level(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
-				  S_OBJECT*& moving, int& moving_length, 
+void create_level(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+				  S_OBJECT*& moving, std::size_t& moving_length, 
 				  int lvl, int& SCORE)
 {
     std::system("color 9F");
@@ -197,7 +197,7 @@ void create_level(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
 	}
 }
 
-void delete_moving(S_OBJECT*& moving, int& moving_length, int i)
+void delete_moving(S_OBJECT*& moving, std::size_t& moving_length, int i)
 {
     if (i < 0 || i >= moving_length)
         return;
@@ -206,7 +206,7 @@ void delete_moving(S_OBJECT*& moving, int& moving_length, int i)
     moving_length--;   
 }
 
-S_OBJECT* get_new_brick(S_OBJECT*& BRICK, int& BRICK_LENGTH)
+S_OBJECT* get_new_brick(S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH)
 {
     BRICK_LENGTH++;
     S_OBJECT* new_arr = new S_OBJECT[BRICK_LENGTH];
@@ -218,7 +218,7 @@ S_OBJECT* get_new_brick(S_OBJECT*& BRICK, int& BRICK_LENGTH)
     return BRICK + BRICK_LENGTH - 1;
 }
 
-S_OBJECT* get_new_moving(S_OBJECT*& moving, int& moving_length)
+S_OBJECT* get_new_moving(S_OBJECT*& moving, std::size_t& moving_length)
 {
     moving_length++;
     S_OBJECT* new_arr = new S_OBJECT[moving_length];
@@ -230,8 +230,8 @@ S_OBJECT* get_new_moving(S_OBJECT*& moving, int& moving_length)
     return moving + moving_length - 1;
 }
 
-void horizon_move_map(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH, 
-					  S_OBJECT*& moving, int& moving_length, float dx)
+void horizon_move_map(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH, 
+					  S_OBJECT*& moving, std::size_t& moving_length, float dx)
 {
     MARIO->x -= dx;
     for (int i = 0; i < BRICK_LENGTH; ++i)
@@ -250,8 +250,8 @@ void horizon_move_map(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
 }
 
 void horizon_move_object(S_OBJECT* obj, S_OBJECT* MARIO, 
-						 S_OBJECT*& BRICK, int& BRICK_LENGTH, 
-						 S_OBJECT*& moving, int& moving_length, 
+						 S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH, 
+						 S_OBJECT*& moving, std::size_t& moving_length, 
 						 int& LEVEL, int& MAX_LVL, int& SCORE)
 {
     obj->x += obj->horiz_speed;
@@ -300,8 +300,8 @@ bool is_pos_in_map(int x, int y)
             && (y < MAP_HEIGHT));
 }
 
-void mario_collision(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
-					 S_OBJECT*& moving, int& moving_length,
+void mario_collision(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+					 S_OBJECT*& moving, std::size_t& moving_length,
 					 int& LEVEL, int& MAX_LVL, int& SCORE)
 {
     for (int i = 0; i < moving_length; ++i)
@@ -330,8 +330,8 @@ void mario_collision(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
     MAX_LVL = 3;
 }
 
-void player_dead(S_OBJECT* MARIO, S_OBJECT*& BRICK, int& BRICK_LENGTH,
-				 S_OBJECT*& moving, int& moving_length,
+void player_dead(S_OBJECT* MARIO, S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+				 S_OBJECT*& moving, std::size_t& moving_length,
 				 int& LEVEL, int& SCORE)
 {
     std::system("color 4F");
@@ -382,8 +382,8 @@ void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1])
 }
 
 void vert_move_object(S_OBJECT* obj, S_OBJECT* MARIO,
-					  S_OBJECT*& BRICK, int& BRICK_LENGTH,
-					  S_OBJECT*& moving, int& moving_length,
+					  S_OBJECT*& BRICK, std::size_t& BRICK_LENGTH,
+					  S_OBJECT*& moving, std::size_t& moving_length,
 					  int& LEVEL, int& MAX_LVL, int& SCORE)
 {
     obj->is_fly = true;
