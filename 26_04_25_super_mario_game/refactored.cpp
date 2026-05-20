@@ -23,33 +23,33 @@ S_OBJECT* BRICK = nullptr;
 int BRICK_LENGTH = 0;
 S_OBJECT* moving = nullptr;
 int moving_length = 0;
-int LEVEL = 1;
-int SCORE = 0;
 
 
 void clear_map();
-void create_level(int lvl);
+void create_level(int lvl, int& SCORE);
 void delete_moving(int i);
 S_OBJECT* get_new_brick();
 S_OBJECT* get_new_moving();
 void horizon_move_map(float dx);
-void horizon_move_object(S_OBJECT* obj, int& MAX_LVL);
+void horizon_move_object(S_OBJECT* obj, int& LEVEL, int& MAX_LVL, int& SCORE);
 void init_object(S_OBJECT* obj, float x_pos, float y_pos, float o_width, float o_height, char in_type);
 bool is_collision(S_OBJECT o1, S_OBJECT o2);
 bool is_pos_in_map(int x, int y);
-void mario_collision(int& MAX_LVL);
-void player_dead();
+void mario_collision(int& LEVEL, int& MAX_LVL, int& SCORE);
+void player_dead(int& LEVEL, int& SCORE);
 void put_object_on_map(S_OBJECT obj);
-void put_score_on_map();
+void put_score_on_map(int& SCORE);
 void set_cur(int x, int y);
 void set_object_pos(S_OBJECT* obj, float x_pos, float y_pos);
 void show_map();
-void vert_move_object(S_OBJECT* obj, int& MAX_LVL);
+void vert_move_object(S_OBJECT* obj, int& LEVEL, int& MAX_LVL, int& SCORE);
 
 int main() {
+	int LEVEL = 1;
 	int MAX_LVL = 0;
+	int SCORE = 0;
 	
-    create_level(LEVEL);
+    create_level(LEVEL, SCORE);
 
     do {
         clear_map();
@@ -61,22 +61,22 @@ int main() {
             horizon_move_map(-1.0f);
 
         if (MARIO.y > MAP_HEIGHT)
-            player_dead();
+            player_dead(LEVEL, SCORE);
 
-        vert_move_object(&MARIO, MAX_LVL);
-        mario_collision(MAX_LVL);
+        vert_move_object(&MARIO, LEVEL, MAX_LVL, SCORE);
+        mario_collision(LEVEL, MAX_LVL, SCORE);
 
         for (int i = 0; i < BRICK_LENGTH; ++i)
             put_object_on_map(BRICK[i]);
 
         for (int i = 0; i < moving_length; ++i) {
-            vert_move_object(moving + i, MAX_LVL);
-            horizon_move_object(moving + i, MAX_LVL);
+            vert_move_object(moving + i, LEVEL, MAX_LVL, SCORE);
+            horizon_move_object(moving + i, LEVEL, MAX_LVL, SCORE);
             put_object_on_map(moving[i]);
         }
 
         put_object_on_map(MARIO);
-        put_score_on_map();
+        put_score_on_map(SCORE);
 
         set_cur(0, 0);
         show_map();
@@ -96,7 +96,7 @@ void clear_map() {
         std::copy(MAP[0], MAP[0] + MAP_WIDTH + 1, MAP[j]);
 }
 
-void create_level(int lvl) {
+void create_level(int lvl, int& SCORE) {
     std::system("color 9F");
     
     BRICK_LENGTH = 0;
@@ -200,7 +200,7 @@ void horizon_move_map(float dx) {
         moving[i].x += dx;
 }
 
-void horizon_move_object(S_OBJECT* obj, int& MAX_LVL) {
+void horizon_move_object(S_OBJECT* obj, int& LEVEL, int& MAX_LVL, int& SCORE) {
     obj->x += obj->horiz_speed;
     
     for (int i = 0; i < BRICK_LENGTH; ++i)
@@ -212,7 +212,7 @@ void horizon_move_object(S_OBJECT* obj, int& MAX_LVL) {
     
     if (obj->c_type == 'o') {
         S_OBJECT tmp = *obj;
-        vert_move_object(&tmp, MAX_LVL);
+        vert_move_object(&tmp, LEVEL, MAX_LVL, SCORE);
         if (tmp.is_fly == true) {
             obj->x -= obj->horiz_speed;
             obj->horiz_speed = -obj->horiz_speed;
@@ -244,7 +244,7 @@ bool is_pos_in_map(int x, int y) {
             && (y < MAP_HEIGHT));
 }
 
-void mario_collision(int& MAX_LVL) {
+void mario_collision(int& LEVEL, int& MAX_LVL, int& SCORE) {
     for (int i = 0; i < moving_length; ++i)
         if (is_collision(MARIO, moving[i])) {
             if (moving[i].c_type == 'o') {
@@ -258,7 +258,7 @@ void mario_collision(int& MAX_LVL) {
                     continue;
                 }
                 else
-                    player_dead();
+                    player_dead(LEVEL, SCORE);
             }
             
             if (moving[i].c_type == '$') {
@@ -271,10 +271,10 @@ void mario_collision(int& MAX_LVL) {
     MAX_LVL = 3;
 }
 
-void player_dead() {
+void player_dead(int& LEVEL, int& SCORE) {
     std::system("color 4F");
     Sleep(500);
-    create_level(LEVEL);
+    create_level(LEVEL, SCORE);
 }
 
 void put_object_on_map(S_OBJECT obj) {
@@ -290,7 +290,7 @@ void put_object_on_map(S_OBJECT obj) {
     }
 }
 
-void put_score_on_map() {
+void put_score_on_map(int& SCORE) {
     std::string score_str = "SCORE: " + std::to_string(SCORE);
     for (size_t i = 0; i < score_str.length() && (i + 5) < MAP_WIDTH; ++i)
         MAP[1][i + 5] = score_str[i];
@@ -314,7 +314,7 @@ void show_map() {
         std::cout << MAP[j];
 }
 
-void vert_move_object(S_OBJECT* obj, int& MAX_LVL) {
+void vert_move_object(S_OBJECT* obj, int& LEVEL, int& MAX_LVL, int& SCORE) {
     obj->is_fly = true;
     obj->vert_speed += 0.05f;
     set_object_pos(obj, obj->x, obj->y + obj->vert_speed);
@@ -341,7 +341,7 @@ void vert_move_object(S_OBJECT* obj, int& MAX_LVL) {
                     LEVEL = 1;
                 std::system("color 2F");
                 Sleep(500);
-                create_level(LEVEL);
+                create_level(LEVEL, SCORE);
             }
             break;
         }
