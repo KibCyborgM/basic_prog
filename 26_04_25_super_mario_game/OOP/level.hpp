@@ -48,5 +48,12 @@ namespace tar {
 			void spawnMoving(float x, float y, char type, float v_speed);
 			void deleteMoving(std::size_t index);
 	};
-}
 
+
+void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
+void put_score_on_map(int score, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
+void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
+void set_cur(int x, int y);
+bool is_pos_in_map(int x, int y);
+
+}
