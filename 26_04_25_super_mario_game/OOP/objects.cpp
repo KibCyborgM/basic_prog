@@ -17,7 +17,7 @@ bool Object::isCollision(const Object& other) const {
             && (y < (other.getY() + other.getHeight())));
 }
 
-void Object::putOnMap(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) const {
+void Object::putOnMap(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) const {
     int ix = static_cast<int>(std::round(x));
     int iy = static_cast<int>(std::round(y));
     int i_width = static_cast<int>(std::round(width));
@@ -26,7 +26,7 @@ void Object::putOnMap(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) const {
     for (int i = ix; i < (ix + i_width); ++i) {
         for (int j = iy; j < (iy + i_height); ++j)
             if (is_pos_in_map(i, j))
-                MAP[j][i] = c_type;
+                map[j][i] = c_type;
     }
 }
 

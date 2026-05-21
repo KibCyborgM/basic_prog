@@ -38,7 +38,7 @@ namespace tar {
 			void changeY(float dy) { y += dy; }
 
 			bool isCollision(const Object& other) const;
-			void putOnMap(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) const;
+			void putOnMap(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) const;
 			void vertMove(GameLevel& level, bool is_mario);
 	};
 	

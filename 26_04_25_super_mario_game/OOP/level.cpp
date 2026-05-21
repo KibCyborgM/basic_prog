@@ -159,16 +159,16 @@ void GameLevel::createLevel() {
     }
 }
 
-void tar::clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
-    for (int i = 0; i < MAP_WIDTH; ++i) MAP[0][i] = ' ';
-    MAP[0][MAP_WIDTH] = '\0';
-    for (int j = 1; j < MAP_HEIGHT; ++j) std::copy(MAP[0], MAP[0] + MAP_WIDTH + 1, MAP[j]);
+void tar::clear_map(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) {
+    for (int i = 0; i < MAP_WIDTH; ++i) map[0][i] = ' ';
+    map[0][MAP_WIDTH] = '\0';
+    for (int j = 1; j < MAP_HEIGHT; ++j) std::copy(map[0], map[0] + MAP_WIDTH + 1, map[j]);
 }
 
-void tar::put_score_on_map(int score, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
+void tar::put_score_on_map(int score, char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     std::string score_str = "SCORE: " + std::to_string(score);
     for (size_t i = 0; i < score_str.length() && (i + 5) < MAP_WIDTH; ++i)
-        MAP[1][i + 5] = score_str[i];
+        map[1][i + 5] = score_str[i];
 }
 
 bool tar::is_pos_in_map(int x, int y) {
@@ -180,7 +180,7 @@ void tar::set_cur(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void tar::show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
-    MAP[MAP_HEIGHT - 1][MAP_WIDTH - 1] = '\0';
-    for (int j = 0; j < MAP_HEIGHT; ++j) std::cout << MAP[j];
+void tar::show_map(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) {
+    map[MAP_HEIGHT - 1][MAP_WIDTH - 1] = '\0';
+    for (int j = 0; j < MAP_HEIGHT; ++j) std::cout << map[j];
 }

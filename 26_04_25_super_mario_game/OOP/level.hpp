@@ -52,9 +52,9 @@ namespace tar {
 	};
 
 
-	void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
-	void put_score_on_map(int score, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
-	void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]);
+	void clear_map(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]);
+	void put_score_on_map(int score, char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]);
+	void show_map(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]);
 	void set_cur(int x, int y);
 	bool is_pos_in_map(int x, int y);
 }
