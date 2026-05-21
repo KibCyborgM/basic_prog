@@ -1,8 +1,9 @@
-#include "objects.hpp"
-#include "level.hpp"
 #include <cmath>
 #include <cstdlib>
 #include <windows.h>
+
+#include "objects.hpp"
+#include "level.hpp"
 
 using namespace tar;
 

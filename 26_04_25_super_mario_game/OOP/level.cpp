@@ -1,6 +1,7 @@
-#include "level.hpp"
 #include <algorithm>
 #include <string>
+
+#include "level.hpp"
 
 using namespace tar;
 
@@ -158,28 +159,28 @@ void GameLevel::createLevel() {
     }
 }
 
-void clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
+void tar::clear_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     for (int i = 0; i < MAP_WIDTH; ++i) MAP[0][i] = ' ';
     MAP[0][MAP_WIDTH] = '\0';
     for (int j = 1; j < MAP_HEIGHT; ++j) std::copy(MAP[0], MAP[0] + MAP_WIDTH + 1, MAP[j]);
 }
 
-void put_score_on_map(int score, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
+void tar::put_score_on_map(int score, char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     std::string score_str = "SCORE: " + std::to_string(score);
     for (size_t i = 0; i < score_str.length() && (i + 5) < MAP_WIDTH; ++i)
         MAP[1][i + 5] = score_str[i];
 }
 
-bool is_pos_in_map(int x, int y) {
+bool tar::is_pos_in_map(int x, int y) {
     return (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT);
 }
 
-void set_cur(int x, int y) {
+void tar::set_cur(int x, int y) {
     COORD coord = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
+void tar::show_map(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) {
     MAP[MAP_HEIGHT - 1][MAP_WIDTH - 1] = '\0';
     for (int j = 0; j < MAP_HEIGHT; ++j) std::cout << MAP[j];
 }
