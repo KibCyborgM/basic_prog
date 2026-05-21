@@ -41,4 +41,26 @@ namespace tar {
 			void putOnMap(char (&MAP)[MAP_HEIGHT][MAP_WIDTH + 1]) const;
 			void vertMove(GameLevel& level, bool is_mario);
 	};
+	
+	class Mario : public Object {
+		public:
+			Mario() : Object(39.0f, 10.0f, 3.0f, 3.0f, '@') {}
+			void reset();
+	};
+
+	class Brick : public Object {
+		public:
+			Brick() = default;
+			Brick(float x_pos, float y_pos, float w, float h, char type) 
+				: Object(x_pos, y_pos, w, h, type) {}
+	};
+
+	class Moving : public Object {
+		public:
+			Moving() = default;
+			Moving(float x_pos, float y_pos, float w, float h, char type) 
+				: Object(x_pos, y_pos, w, h, type) {}
+				
+			void horizonMove(GameLevel& level);
+	};
 }

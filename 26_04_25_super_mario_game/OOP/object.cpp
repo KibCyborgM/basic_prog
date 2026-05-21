@@ -63,3 +63,34 @@ void Object::vertMove(GameLevel& level, bool is_mario) {
         }
     }
 }
+
+void Mario::reset() {
+	setPos(39.0f, 10.0f);
+	setVertSpeed(0.0f);
+	setIsFly(false); 
+}
+
+void Moving::horizonMove(GameLevel& level)
+{
+    changeX(getHorizSpeed());
+    
+    Brick* bricks = level.getBricks();
+    std::size_t brick_len = level.getBrickLength();
+    
+    for (size_t i = 0; i < brick_len; ++i) {
+        if (isCollision(bricks[i])) {
+            changeX(-getHorizSpeed());
+            setHorizSpeed(-getHorizSpeed());
+            return;
+        }
+    }
+    
+    if (getType() == 'o') {
+        Moving tmp = *this;
+        tmp.vertMove(level, false);
+        if (tmp.getIsFly()) {
+            changeX(-getHorizSpeed());
+            setHorizSpeed(-getHorizSpeed());
+        }
+    }
+}
