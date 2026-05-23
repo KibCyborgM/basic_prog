@@ -10,11 +10,8 @@ namespace tar {
 		private:
 			float x = 0.0f, y = 0.0f;
 			float width = 0.0f, height = 0.0f;
-			float vert_speed = 0.0f;
-			bool is_fly = false;
 			char c_type = ' ';
-			float horiz_speed = 0.2f;
-
+			
 		public:
 			Object() = default;
 			Object(float x_pos, float y_pos, float w, float h, char type);
@@ -25,28 +22,18 @@ namespace tar {
 			float getWidth() const { return width; }
 			float getHeight() const { return height; }
 			char getType() const { return c_type; }
-			bool getIsFly() const { return is_fly; }
-			float getVertSpeed() const { return vert_speed; }
-			float getHorizSpeed() const { return horiz_speed; }
 
 			void setPos(float x_pos, float y_pos) { x = x_pos; y = y_pos; }
-			void setVertSpeed(float speed) { vert_speed = speed; }
-			void setHorizSpeed(float speed) { horiz_speed = speed; }
-			void setIsFly(bool fly) { is_fly = fly; }
+
 			void setType(char type) { c_type = type; }
 			void changeX(float dx) { x += dx; }
 			void changeY(float dy) { y += dy; }
 
 			bool isCollision(const Object& other) const;
 			void putOnMap(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) const;
-			void vertMove(GameLevel& level, bool is_mario);
 	};
 	
-	class Mario : public Object {
-		public:
-			Mario() : Object(39.0f, 10.0f, 3.0f, 3.0f, '@') {}
-			void reset();
-	};
+	
 
 	class Brick : public Object {
 		public:
@@ -56,11 +43,33 @@ namespace tar {
 	};
 
 	class Moving : public Object {
+		private:
+			float horiz_speed = 0.2f;
+			float vert_speed = 0.0f;
+			bool is_fly = false;
+			
 		public:
 			Moving() = default;
 			Moving(float x_pos, float y_pos, float w, float h, char type) 
 				: Object(x_pos, y_pos, w, h, type) {}
+			
+			float getVertSpeed() { return vert_speed; }
+			float getHorizSpeed() { return horiz_speed; }
+			bool getIsFly() const { return is_fly; }
+			
+			void setVertSpeed(float speed) { vert_speed = speed; }
+			void setHorizSpeed(float speed) { horiz_speed = speed; }
+			void setIsFly(bool fly) { is_fly = fly; }
 				
+			void vertMove(GameLevel& level, bool is_mario);
 			void horizonMove(GameLevel& level);
+			
+	};
+	
+	class Mario : public Moving {	
+		public:
+			Mario() : Moving(39.0f, 10.0f, 3.0f, 3.0f, '@') {}
+			
+			void reset();
 	};
 }

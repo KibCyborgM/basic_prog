@@ -8,7 +8,7 @@
 using namespace tar;
 
 Object::Object(float x_pos, float y_pos, float w, float h, char type)
-    : x(x_pos), y(y_pos), width(w), height(h), vert_speed(0.0f), is_fly(false), c_type(type), horiz_speed(0.2f) {}
+    : x(x_pos), y(y_pos), width(w), height(h), c_type(type) {}
 
 bool Object::isCollision(const Object& other) const {
     return (((x + width) > other.getX())
@@ -27,41 +27,6 @@ void Object::putOnMap(char (&map)[MAP_HEIGHT][MAP_WIDTH + 1]) const {
         for (int j = iy; j < (iy + i_height); ++j)
             if (is_pos_in_map(i, j))
                 map[j][i] = c_type;
-    }
-}
-
-void Object::vertMove(GameLevel& level, bool is_mario) {
-    is_fly = true;
-    vert_speed += 0.05f;
-    y += vert_speed;
-    
-    Brick* bricks = level.getBricks();
-    std::size_t brick_len = level.getBrickLength();
-    
-    for (size_t i = 0; i < brick_len; ++i) {
-        if (isCollision(bricks[i])) {
-            if (vert_speed > 0)
-                is_fly = false;
-            
-            if (bricks[i].getType() == '?' && vert_speed < 0 && is_mario) {
-                bricks[i].setType('-');
-                level.spawnMoving(bricks[i].getX(), bricks[i].getY() - 3.0f, '$', -0.7f);
-            }
-            
-            y -= vert_speed;
-            vert_speed = 0.0f;
-            
-            if (bricks[i].getType() == '+') {
-                int next_lvl = level.getLevelNum() + 1;
-                if (next_lvl > level.getMaxLvl())
-                    next_lvl = 1;
-                level.setLevelNum(next_lvl);
-                std::system("color 2F");
-                Sleep(500);
-                level.createLevel();
-            }
-            break;
-        }
     }
 }
 
@@ -92,6 +57,41 @@ void Moving::horizonMove(GameLevel& level)
         if (tmp.getIsFly()) {
             changeX(-getHorizSpeed());
             setHorizSpeed(-getHorizSpeed());
+        }
+    }
+}
+
+void Moving::vertMove(GameLevel& level, bool is_mario) {
+	setIsFly(true);
+    setVertSpeed(getVertSpeed() + 0.05f);
+    changeY(getVertSpeed());
+    
+    Brick* bricks = level.getBricks();
+    std::size_t brick_len = level.getBrickLength();
+    
+    for (size_t i = 0; i < brick_len; ++i) {
+        if (isCollision(bricks[i])) {
+            if (vert_speed > 0)
+                is_fly = false;
+            
+            if (bricks[i].getType() == '?' && vert_speed < 0 && is_mario) {
+                bricks[i].setType('-');
+                level.spawnMoving(bricks[i].getX(), bricks[i].getY() - 3.0f, '$', -0.7f);
+            }
+            
+            changeY(-getVertSpeed());
+            setVertSpeed(0.0f);
+            
+            if (bricks[i].getType() == '+') {
+                int next_lvl = level.getLevelNum() + 1;
+                if (next_lvl > level.getMaxLvl())
+                    next_lvl = 1;
+                level.setLevelNum(next_lvl);
+                std::system("color 2F");
+                Sleep(500);
+                level.createLevel();
+            }
+            break;
         }
     }
 }
